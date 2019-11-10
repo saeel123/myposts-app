@@ -11,13 +11,10 @@ export class SingupComponent {
     constructor(public authService: AuthService){}
 
     onSignUp (form: NgForm) {
-        console.log(form.value);
         if (form.invalid) {
             return;
         }
-
         this.authService.createUser(form.value.email, form.value.password);
-        
     }
     
 }
