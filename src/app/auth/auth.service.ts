@@ -10,7 +10,6 @@ export class AuthService {
     private token: string;
     private authStatusListener = new Subject<boolean>();
 
-
     getToken(){
         return this.token;
     }
