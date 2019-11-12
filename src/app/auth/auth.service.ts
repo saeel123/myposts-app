@@ -9,9 +9,14 @@ export class AuthService {
     constructor(private http: HttpClient){}
     private token: string;
     private authStatusListener = new Subject<boolean>();
+    private isAuthenticated = false;
 
     getToken(){
         return this.token;
+    }
+
+    getIsAuth() {
+        return this.isAuthenticated;
     }
 
     getAuthStatusListener() {
@@ -32,7 +37,11 @@ export class AuthService {
             .subscribe(response => {
                 console.log(response);
                 this.token = response.token;
-                this.authStatusListener.next(true);
+
+                if (this.token) {
+                    this.isAuthenticated = true;
+                    this.authStatusListener.next(true);
+                }
             })
     }
 
