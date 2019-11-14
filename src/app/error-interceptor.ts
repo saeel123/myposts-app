@@ -5,18 +5,24 @@ import {    HttpInterceptor,
         } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
+import { MatDialog } from "@angular/material";
+import { ErrorComponent } from "./error/error.component";
+import { Injectable } from "@angular/core";
 
+
+
+@Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(){}
+    constructor(private dialog: MatDialog){}
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
         return next.handle(req).pipe(
             catchError((error: HttpErrorResponse) => {
-                if (error.error.message == undefined) {
-                    alert(error.error.error.message);
-                } else {
-                    alert(error.error.message);
+                let errorMessage = "An unknown error occurred!";
+                if (error.error.message) {
+                    errorMessage = error.error.message;
                 }
+                this.dialog.open(ErrorComponent, {data: {message: errorMessage}});
                 return throwError(error);
             })
         );
